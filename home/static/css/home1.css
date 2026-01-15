@@ -1,11 +1,11 @@
 .content { 
     align-items: center;
-    max-height: 100%; /* Giới hạn chiều cao để kích hoạt cuộn */
-    overflow-y: auto; /* Cho phép cuộn theo chiều dọc khi nội dung vượt quá */
+    max-height: 100%; 
+    overflow-y: auto; 
 }
 .slide-show {
-    width: 83vw; /* Chiếm 80% chiều rộng màn hình */
-    max-width: 100%; /* Không giới hạn cố định theo px */
+    width: 83vw; 
+    max-width: 100%; 
     overflow: hidden;
     position: relative;
     margin-top: 0;

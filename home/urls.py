@@ -17,7 +17,6 @@ urlpatterns = [
     
 
 
-    # Chiến
     path('product/ton-kho/', login_required(views.get_product_tonKho), name='get_product_tonKho'),
     path('product/add/', login_required(views.add_product), name='add_product'),
     path('product/edit/<int:product_id>/', login_required(views.edit_product), name='edit_product'),
@@ -30,7 +29,6 @@ urlpatterns = [
 
 
 
-    # Tùng
     path('order/',views.get_order, name='order'),
     path('add_order/',views.add_order, name='add_order'),
     path('update-status/<int:order_id>/', views.update_order_status, name='update_order_status'),    
@@ -41,7 +39,6 @@ urlpatterns = [
 
     
 
-    #store
     path('select_store/', views.select_store, name='select_store'),
     path('create_store/', views.create_store, name='create_store'),
     path('store_info/', views.store_info, name='store_info'),

@@ -1,13 +1,13 @@
 .content{
     display: flex;
-    justify-content: center; /* Căn giữa theo chiều ngang */
+    justify-content: center; 
     align-items: center;
     background-image: url(https://www.sapo.vn/Themes/Portal/Default/StylesV2/images/home/img-map.jpg);
 }
 .update-info{
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Căn giữa theo chiều ngang */
+    justify-content: center; 
     align-items: center;
     background: white;
     padding: 25px;

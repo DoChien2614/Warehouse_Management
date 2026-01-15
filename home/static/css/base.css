@@ -46,7 +46,7 @@ body{
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    /*overflow: hidden;*/
+    
 }
 
 .user-img img {
@@ -134,17 +134,17 @@ body{
 }
 
 .footer {
-    margin-top: auto; /* Đẩy footer xuống cuối */
+    margin-top: auto; 
     padding: 10px;
 }
 
 .search {
-    position: absolute; /* Cố định vị trí */
-    top: 0; /* Đặt ở đầu trang */
-    left: 256px; /* Dịch sang phải theo chiều rộng sidebar */
-    width: calc(100% - 258px); /* Trừ đi phần sidebar */
-    height: 48px; /* Chiều cao của top-div */
-    background: white; /* Màu nền tùy chỉnh */
+    position: absolute; 
+    top: 0; 
+    left: 256px; 
+    width: calc(100% - 258px); 
+    height: 48px; 
+    background: white; 
     margin-left: 2px;
     margin-bottom: 2px;
     display: flex;

@@ -1,7 +1,7 @@
 .content{
     display: flex;
-    justify-content: center; /* căn giữa theo chiều ngang */
-    align-items: center;     /* căn giữa theo chiều dọc */
+    justify-content: center; 
+    align-items: center;     
     background-image: url(https://www.sapo.vn/Themes/Portal/Default/StylesV2/images/home/img-map.jpg);
     margin-top: 0;
     height: 100vh;
@@ -14,8 +14,8 @@
     background: white;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    overflow-y: auto; /* Cuộn khi nội dung quá dài */
-    max-height: 100%; /* Giới hạn chiều cao */
+    overflow-y: auto; 
+    max-height: 100%; 
     
 }
 

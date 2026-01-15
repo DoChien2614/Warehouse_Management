@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
 
 class Store(models.Model):
     name = models.CharField(max_length=100)
@@ -25,7 +24,6 @@ class StoreUser(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.store.name} - {self.role}"
 
-# Chiến
 class Product(models.Model):
     CATEGORY_CHOICES = [
         ('ao', 'Áo'),
@@ -70,7 +68,6 @@ class ImportReceipt(models.Model):
         return f"Phiếu nhập #{self.id} - {self.name}"
 
 
-# Tùng
 class Order(models.Model):
     STATUS_CHOICES = [
         ('shipping', 'shipping'),

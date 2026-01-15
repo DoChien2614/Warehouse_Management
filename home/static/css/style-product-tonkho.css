@@ -32,9 +32,9 @@
     justify-content: space-between;
     align-items: center;
     margin: 10px;
-    margin: 20px 0 10px 0; /* Tăng khoảng cách trên */
-    position: relative; /* Để form có thể đặt chính xác */
-    flex-wrap: wrap; /* Đảm bảo không bị vỡ layout khi thu nhỏ màn hình */
+    margin: 20px 0 10px 0; 
+    position: relative; 
+    flex-wrap: wrap; 
 }
 
 /* Nút phân loại */
@@ -83,53 +83,53 @@
 
 /* Nút còn ít */
 .less-btn {
-    border-radius: 20px;  /* Bo góc */
-    padding: 8px 16px;  /* Khoảng cách bên trong */
-    background-color: #e33f3f;  /* Màu nền */
-    border: none;  /* Bỏ viền */
-    color: white;  /* Màu chữ */
-    text-decoration: none; /* Bỏ gạch chân */
+    border-radius: 20px;  
+    padding: 8px 16px;  
+    background-color: #e33f3f;  
+    border: none;  
+    color: white;  
+    text-decoration: none; 
     display: inline-block;
     font-size: 15px;
     cursor: pointer;
     transition: background 0.3s ease;
 }
 .less-btn:hover {
-    background-color: #b40404; /* Hiệu ứng hover */
+    background-color: #b40404; 
 }
 
 
 /* Nút "Thêm sản phẩm" */
 #show-form-btn {
-    border-radius: 20px;  /* Bo góc */
-    padding: 8px 16px;  /* Khoảng cách bên trong */
-    background-color: #28a745;  /* Màu nền */
-    border: none;  /* Bỏ viền */
-    color: white;  /* Màu chữ */
-    text-decoration: none; /* Bỏ gạch chân */
+    border-radius: 20px;  
+    padding: 8px 16px;  
+    background-color: #28a745;  
+    border: none;  
+    color: white;  
+    text-decoration: none; 
     display: inline-block;
     font-size: 15px;
     cursor: pointer;
     transition: background 0.3s ease;
-    margin-left: auto; /* Đẩy nút về phía bên phải */
+    margin-left: auto; 
     margin-right: 20px
 }
 
 #show-form-btn:hover {
-    background-color: #218838; /* Hiệu ứng hover */
+    background-color: #218838; 
 }
 
 /* Phân trang */
 .pagination {
     position: fixed;
-    bottom: 10px;  /* Cách đáy */
+    bottom: 10px;  
     left: 58.5%;
-    transform: translateX(-50%); /* Canh giữa */
+    transform: translateX(-50%); 
     background-color: white; 
     padding: 5px 10px;
     border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
-    z-index: 1000; /* Đảm bảo hiển thị trên các phần khác */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+    z-index: 1000; 
 }
 
 .pagination a {
@@ -154,8 +154,8 @@
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 20px;
-    max-height: 500px; /* Điều chỉnh chiều cao tối đa theo ý muốn */
-    overflow-y: auto; /* Bật thanh cuộn */
+    max-height: 500px; 
+    overflow-y: auto; 
 }
 
 /* Sản phẩm */
@@ -199,7 +199,7 @@
 /* Nút sửa xóa */
 .product-actions {
     display: flex;
-    gap: 15px; /* Tạo khoảng cách giữa các nút */
+    gap: 15px; 
 }
 
 .product-actions a {
@@ -210,7 +210,7 @@
 }
 
 .product-actions a:hover {
-    color: #ff0000; /* Đổi màu khi hover */
+    color: #ff0000; 
     text-decoration: underline;
 }
 
@@ -232,14 +232,14 @@
 
 /* Lớp phủ nền tối */
 .overlay {
-    display: none; /* Ẩn mặc định */
+    display: none; 
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5); /* Màu đen trong suốt */
-    z-index: 1001; /* Dưới form nhưng trên nội dung khác */
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: 1001; 
 }
 
 /* Form thêm sản phẩm */
@@ -321,7 +321,7 @@
 
 /* Form sửa sản phẩm */
 .edit-product-form {
-    display: none; /* Ẩn mặc định */
+    display: none; 
     position: fixed;
     top: 50%;
     left: 50%;

@@ -42,7 +42,6 @@ class UserUpdateForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'email']
 
 
-# Chiến
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
@@ -117,7 +116,6 @@ class ImportReceiptForm(forms.ModelForm):
         return instance
 
 
-# Tùng
 class OrderForm(forms.ModelForm):
     order_products = forms.CharField(label='Sản phẩm', required=True)
     order_date = forms.CharField(label='Ngày đặt (dd/mm/yyyy)')

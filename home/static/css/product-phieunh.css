@@ -5,7 +5,7 @@
     margin-left: 20px;
     margin-right: 20px;
     border-collapse: collapse;
-    overflow-y: auto; /* Bật thanh cuộn */
+    overflow-y: auto; 
 }
 
 /* Định dạng cho các ô bảng */
@@ -40,7 +40,7 @@
 /* Nút sửa xóa */
 .product-actions {
     display: flex;
-    gap: 15px; /* Tạo khoảng cách giữa các nút */
+    gap: 15px; 
 }
 
 .product-actions a {
@@ -51,7 +51,7 @@
 }
 
 .product-actions a:hover {
-    color: #ff0000; /* Đổi màu khi hover */
+    color: #ff0000; 
     text-decoration: underline;
 }
 
@@ -66,19 +66,19 @@
 
 /* Lớp phủ nền tối */
 .overlay {
-    display: none; /* Ẩn mặc định */
+    display: none; 
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5); /* Màu đen trong suốt */
-    z-index: 1001; /* Dưới form nhưng trên nội dung khác */
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: 1001; 
 }
 
 /* Form sửa sản phẩm */
 .edit-product-form {
-    display: none; /* Ẩn mặc định */
+    display: none; 
     position: fixed;
     top: 50%;
     left: 50%;

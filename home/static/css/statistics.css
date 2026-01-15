@@ -38,9 +38,9 @@ h2 {
 
 /* === Section chính === */
 .statistics-content {
-    max-height: 550px; /* bạn có thể điều chỉnh theo ý muốn: 400px, 600px,... */
+    max-height: 550px; 
     overflow-y: auto;
-    padding-right: 10px; /* giúp tránh che nội dung bởi thanh cuộn */
+    padding-right: 10px; 
     margin-bottom: 20px;
     margin-left: 20px;
     margin-right: 20px;
@@ -119,11 +119,11 @@ h2 {
 
 
 .stat-content {
-    display: none; /* Mặc định ẩn phần nội dung */
+    display: none; 
 }
 
 .stat-card h5 {
-    cursor: pointer; /* Khi trỏ vào sẽ hiện bàn tay */
+    cursor: pointer; 
 }
 
 .toggle-section {

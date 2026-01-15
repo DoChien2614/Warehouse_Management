@@ -15,7 +15,6 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 
 
-# Create your views here.
 
 def get_home(request):
     return render(request, 'page1/home.html')
@@ -55,7 +54,6 @@ def update_profile(request):
     return render(request, 'page1/profile.html', {'form': form})
 
 
-# Chiến
 # ===================== TỒN KHO =====================
 @login_required
 def inventory_list(request):
@@ -401,7 +399,6 @@ def statistics_view(request):
 
 
 
-# Tùng
 
 def parse_order_products(raw_data, request):
     raw_data = raw_data.strip()

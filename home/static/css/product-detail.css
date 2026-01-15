@@ -1,6 +1,6 @@
 h2 {
     text-align: left;
-    margin-left: 20px; /* Để cách lề một chút */
+    margin-left: 20px; 
     margin-top: 30px
 }
 
@@ -20,7 +20,7 @@ h2 {
 .card-img-top {
     max-width: 100%;
     height: auto;
-    max-height: 400px; /* hoặc kích thước tùy ý bạn */
+    max-height: 400px; 
     object-fit: cover;
     display: block;
     margin: 20px;
