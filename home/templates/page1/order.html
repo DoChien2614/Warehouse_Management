@@ -1,0 +1,573 @@
+{% extends "page1/base.html" %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<html lang="vi">
+    <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Danh sách từ CSDL</title>
+        <link rel="stylesheet" href="{% static 'css/style-order.css' %}">
+        </style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            
+            function insertOrder() {
+                document.getElementById('insertOrder').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+            }
+
+            function hideInsertOrder() {
+                document.getElementById('insertOrder').style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
+                $('#orderError').hide();
+            }
+
+            function changeStatus(orderId) {
+                const status = document.getElementById('status_' + orderId).value;
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "update_order_status" 0 %}'.replace('0', orderId),  // Replace with dynamic orderId
+                    data: {
+                        'status': status,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            location.reload();  // Refresh the page to show updated status
+                        } else {
+                            alert(response.message || 'Có lỗi xảy ra');
+                        }
+                    },
+                    error: function() {
+                        alert('Có lỗi xảy ra');
+                    }
+                });
+            }
+
+            function deleteOrder(orderId) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "delete_order" 0 %}'.replace('0', orderId),
+                        data: {
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        },
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                // Loại bỏ dòng đơn hàng khỏi bảng sau khi xóa thành công
+                                $('tr#order_' + orderId).remove(); 
+                                location.reload(); 
+                            } else {
+                                alert(response.message || 'Có lỗi xảy ra');
+                            }
+                        },
+                        error: function() {
+                            alert('Có lỗi xảy ra');
+                        }
+                    });
+            }
+            
+            function editOrder(orderId){
+                document.getElementById('editOrder').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+
+                fetch(`/update_order_details/${orderId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Fetched data:', data);
+
+                        document.getElementById('order-id').value = orderId;
+                        document.getElementById('order_code').value = data.order.order_code;
+                        document.getElementById('customer_name').value = data.order.customer_name;
+                        document.getElementById('order_date').value = data.order.order_date;
+                        document.getElementById('shipping_unit').value = data.order.shipping_unit;
+                        document.getElementById('customer_address').value = data.order.customer_address;
+                        document.getElementById('customer_phone').value = data.order.customer_phone;
+                        document.getElementById('status').value = data.order.status;
+
+                        let products = data.order.products;
+
+                        let productText = products.map(product => {
+                            return `${product.product_name}, ${product.quantity}`;
+                        }).join('; ');
+
+                        console.log('Generated productText:', productText);
+
+                        document.getElementById('order_products').value = productText;
+                        console.log('Set order_products input value:', document.getElementById('order_products').value);
+                    })
+                    .catch(error => console.error('Error fetching order details:', error));
+            }
+
+            
+            function hideEditOrder() {
+                document.getElementById('editOrder').style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
+            }
+            
+            function renderOrderTable(orders, pagination_html) {
+                const tbody = document.getElementById('ordersTableBody');
+                tbody.innerHTML = '';
+                const paginationElement = document.getElementById("pagination");
+                console.log("Pagination element:", paginationElement);
+                paginationElement.innerHTML = pagination_html;
+
+                orders.sort((a, b) => new Date(b.order_date) - new Date(a.order_date));
+
+                orders.forEach(order => {
+                    const row = document.createElement('tr');
+                    const date = new Date(order.order_date);
+                    const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+                    row.innerHTML = `
+                        <td>${order.order_code}</td>
+                        <td>${formattedDate}</td>
+                        <td>${order.customer_name}</td>
+                        <td>
+                            <select id="status_${order.id}" onchange="changeStatus(${order.id})">
+                                <option value="shipping" ${order.status == 'shipping' ? 'selected' : ''}>Đang vận chuyển</option>
+                                <option value="completed" ${order.status == 'completed' ? 'selected' : ''}>Đã hoàn thành</option>
+                                <option value="canceled" ${order.status == 'canceled' ? 'selected' : ''}>Đã hủy</option>
+                                <option value="returned" ${order.status == 'returned' ? 'selected' : ''}>Hoàn hàng</option>
+                            </select>             
+                        </td>
+                        <td>
+                            <button onclick="window.location.href='/view_order/${order.id}'">Xem</button>
+                            
+                            <button onclick="deleteOrder(${order.id})">Xóa</button>                            
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Render pagination
+                document.getElementById("pagination").innerHTML = pagination_html;
+
+                // Gắn lại các sự kiện chuyển trang
+                console.log("Chuẩn bị gắn lại sự kiện này");
+                attachPaginationHandlers();
+            }
+
+            function attachPaginationHandlers() {
+                console.log("AttachPaginationHandlers được gọi");
+
+                const links = document.querySelectorAll('#pagination a');
+                links.forEach(link => {
+                    const newLink = link.cloneNode(true); // clone để xóa mọi event listener cũ
+                    link.parentNode.replaceChild(newLink, link); // thay thế link cũ bằng link mới
+
+                    newLink.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const href = this.getAttribute('href');
+                        const urlParams = new URLSearchParams(href.split('?')[1]);
+                        const page = urlParams.get('page');
+                        const q = urlParams.get('q');
+                        const start_date = urlParams.get('start_date');
+                        const end_date = urlParams.get('end_date');
+
+                        if (page) {
+                            applyCurrentFilter(page, q, start_date, end_date);
+                        } else {
+                            console.warn("Page null hoặc không hợp lệ:", href);
+                        }
+                    });
+                });
+            }
+                
+            function searchOrdersByKeyword(keyword, page = 1) {
+                console.log("🔍 searchOrdersByKeyword called with:", { keyword, page });
+
+                let url = `/search_orders/?page=${page}`;
+                
+                if (keyword && keyword.trim() !== "") {
+                    url += `&q=${encodeURIComponent(keyword)}`;
+                }
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("✅ Keyword search response:", data);
+                        if (data.status === 'success') {
+                            renderOrderTable(data.orders, data.pagination_html);
+                        } else {
+                            console.warn("⚠️ Unexpected status:", data.status);
+                        }
+                    })
+                    .catch(error => console.error("❌ Fetch error:", error));
+            }
+
+
+            function searchOrdersByDate(start_date, end_date, page = 1) {
+                console.log("📅 searchOrdersByDate called with:", { start_date, end_date, page });
+
+                let url = `/search_orders/?page=${page}`;
+
+                if (start_date) {
+                    url += `&start_date=${encodeURIComponent(start_date)}`;
+                }
+                if (end_date) {
+                    url += `&end_date=${encodeURIComponent(end_date)}`;
+                }
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("✅ Date search response:", data);
+                        if (data.status === 'success') {
+                            renderOrderTable(data.orders, data.pagination_html);
+                        } else {
+                            console.warn("⚠️ Unexpected status:", data.status);
+                        }
+                    })
+                    .catch(error => console.error("❌ Fetch error:", error));
+            }
+
+            function fetchAllOrders(page = 1) {
+                fetch(`/all-orders/?page=${page}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            renderOrderTable(data.orders, data.pagination_html);
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+            }
+
+            let currentStatus = "";
+
+            function filterByStatus(status, page = 1) {
+                if (!status || status.trim() === "") {
+                    // Nếu không có trạng thái, quay về trang gốc
+                    window.location.href = "/order/";
+                    return;
+                }
+
+                currentStatus = status;
+
+                fetch(`/filter-orders/?status=${status}&page=${page}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            renderOrderTable(data.orders, data.pagination_html);
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+            }
+
+            function applyCurrentFilter(page = 1, q = '', start_date = '', end_date = '') {
+                if (q && q.trim() !== '') {
+                    searchOrdersByKeyword(q, page);
+                } else if (start_date && end_date) {
+                    searchOrdersByDate(start_date, end_date, page);
+                } else if (currentStatus) {
+                    filterByStatus(currentStatus, page);
+                } else {
+                    // fallback: reload trang hoặc gọi API mặc định
+                    fetch(`/orders/?page=${page}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                renderOrderTable(data.orders, data.pagination_html);
+                            }
+                        })
+                        .catch(error => console.error("❌ Fetch fallback error:", error));
+                }
+            }
+
+
+            // Function to submit the form via AJAX
+            $(document).ready(function() {
+                $('#orderForm').submit(function(event) {
+                    event.preventDefault();  // Prevent the form from submitting normally
+                    const formData = $(this).serialize();  // Get form data
+                    $.ajax({
+                        type: 'POST',
+                        url: `/add_order/`,
+                        data: formData + '&csrfmiddlewaretoken=' + '{{ csrf_token }}',  // Include CSRF token
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                location.reload();  // Reload lại toàn bộ trang
+                                hideInsertOrder();
+                            } else {
+                                $('#orderError').text(response.message || 'Có lỗi xảy ra số 1').show();
+                            }
+                        },
+                        error: function(xhr) {
+                            const errorMsg = xhr.responseJSON?.message || 'Có lỗi xảy ra số 2';
+                            $('#orderError').text(errorMsg).show();
+                        }
+                    });
+                });
+            });
+
+            $(document).ready(function() {
+                $('#editOrderForm').submit(function(event) {
+                    event.preventDefault();
+
+                    const orderId = $('#order-id').val();
+                    console.log('Order ID:', orderId); 
+                    const formData = $(this).serialize();        
+                    console.log("Submitting order update with data:", formData);
+                    $.ajax({
+                        type: 'POST',
+                        url: `/update_order/${orderId}/`,
+                        data: formData + '&csrfmiddlewaretoken=' + '{{ csrf_token }}',
+                        success: function(response) {
+                            console.log("Success rồi nè: ", response);
+                            if (response.status === 'success') {
+                                console.log("Response cực chuẩn");
+                                location.reload();
+                                hideEditOrder();
+                            } else {
+                                console.log("response sai rồi :((");
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Lỗi AJAX:", error);
+                            console.error("Response Text:", xhr.responseText);
+                        }
+                    });
+                }); 
+            });
+                        
+        </script>
+       
+    </head>
+    <body>
+        <h2>Danh Sách Đơn Hàng</h2>
+        <!-- Hàng nút và tìm kiếm trên đầu -->
+        <div class="top-actions">
+            <div class="top-actions-left">
+                <div class="status-buttons">
+                    <button onclick="filterByStatus('')" class="status-btn">Tất cả</button>
+                    <button onclick="filterByStatus('shipping')" class="status-btn">Đang vận chuyển</button>
+                    <button onclick="filterByStatus('completed')" class="status-btn">Đã hoàn thành</button>
+                    <button onclick="filterByStatus('canceled')" class="status-btn">Đã hủy</button>
+                    <button onclick="filterByStatus('returned')" class="status-btn">Hoàn hàng</button>
+                </div>
+            </div>
+            <div class="top-actions-right">
+                <!-- Nút mở form -->
+                <div style="position: relative; display: inline-block;">
+                    <button id="toggle-date-search" class="toggle-btn">
+                        📅 Tìm kiếm theo ngày
+                    </button>
+
+                    <!-- Form hiển thị ngay dưới nút -->
+                    <div id="date-search-form" class="dropdown-form hidden">
+                        <form id="date-search-form-element" onsubmit="return handleDateTextInput(event)">
+                            <label for="start_date_text">Từ ngày:</label>
+                            <input type="text" id="start_date_text" placeholder="dd/mm/yyyy" required>
+                            <input type="hidden" id="start_date" name="start_date">
+                    
+                            <label for="end_date_text">Đến ngày:</label>
+                            <input type="text" id="end_date_text" placeholder="dd/mm/yyyy" required>
+                            <input type="hidden" id="end_date" name="end_date">
+                    
+                            <button type="submit">Tìm kiếm</button>
+                        </form>
+                    </div>                    
+                </div>
+
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Tìm kiếm đơn hàng...">
+                    <button onclick="searchOrdersByKeyword(document.getElementById('searchInput').value)">Tìm</button>
+                </div>
+                <button onclick="insertOrder()" id="show-form-btn">Nhập đơn hàng</button>
+            </div>
+        </div>               
+    
+        <!-- Nút thêm đơn hàng -->
+        <div id="overlay"> </div>
+        <div id="insertOrder">
+            <div id="orderError" style="display: none; color: red; margin-bottom: 10px;"></div>
+            <h2>Nhập đơn hàng</h2>
+            <form id="orderForm" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="{{ form.order_code.id_for_label }}">{{ form.order_code.label }}</label>
+                {{ form.order_code }}
+                <label for="{{ form.customer_name.id_for_label }}">{{ form.customer_name.label }}</label>
+                {{ form.customer_name }}
+                <label for="{{ form.customer_address.id_for_label }}">{{ form.customer_address.label }}</label>
+                {{ form.customer_address }}
+                <label for="{{ form.customer_phone.id_for_label }}">{{ form.customer_phone.label }}</label>
+                {{ form.customer_phone }}
+                <label for="{{ form.order_date.id_for_label }}">{{ form.order_date.label }}</label>
+                {{ form.order_date }}
+                <label for="{{ form.shipping_unit.id_for_label }}">{{ form.shipping_unit.label }}</label>
+                {{ form.shipping_unit }}
+                <label for="{{ form.order_products.id_for_label }}">{{ form.order_products.label }}</label>
+                {{ form.order_products }}
+                <div class="button-group">
+                    <button type="submit">Lưu Đơn Hàng</button>
+                    <button type="button" onclick="hideInsertOrder()">Hủy</button>
+                </div>
+            </form>
+        </div>
+    
+        <!-- Nút sửa đơn hàng -->
+        <div id="overlay"></div>
+        <div id="editOrder">
+            <h2>Chỉnh sửa đơn hàng</h2>
+            <form id="editOrderForm" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Ẩn ID và User -->
+                <input type="hidden" id="order-id" name="order_id">
+                <input type="hidden" id="user_id" name="user">
+                <label for="order_code">Mã đơn hàng:</label>
+                <input type="text" id="order_code" name="order_code" required>
+                <label for="customer_name">Tên khách hàng:</label>
+                <input type="text" id="customer_name" name="customer_name" required>
+                <label for="customer_address">Địa chỉ khách hàng:</label>
+                <input type="text" id="customer_address" name="customer_address" required>
+                <label for="customer_phone">Số điện thoại khách hàng:</label>
+                <input type="text" id="customer_phone" name="customer_phone" required>
+                <label for="order_date">Ngày đặt:</label>
+                <input type="date" id="order_date" name="order_date" required>
+                <label for="shipping_unit">Đơn vị vận chuyển:</label>
+                <input type="text" id="shipping_unit" name="shipping_unit" required>
+                <input type="hidden" id="order_products" name="order_products">
+                <input type="hidden" id="status" name="status">
+                <!-- Nhóm nút -->
+                <div class="button-group">
+                    <button type="submit">Lưu Đơn Hàng</button>
+                    <button type="button" onclick="hideEditOrder()">Hủy</button>
+                </div>
+            </form>
+        </div>
+    
+        <!-- Bảng hiển thị đơn hàng -->
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Mã Đơn Hàng</th>
+                    <th>Ngày Đặt</th>
+                    <th>Tên Khách Hàng</th>
+                    <th>Trạng Thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.order_code }}</td>
+                    <td>{{ order.order_date|date:"d/m/Y" }}</td>
+                    <td>{{ order.customer_name }}</td>
+                    <td>
+                        <select id="status_{{ order.id }}" onchange="changeStatus({{ order.id }})">
+                            <option value="shipping" {% if order.status == 'shipping' %}selected{% endif %}>Đang vận chuyển</option>
+                            <option value="completed" {% if order.status == 'completed' %}selected{% endif %}>Đã hoàn thành</option>
+                            <option value="canceled" {% if order.status == 'canceled' %}selected{% endif %}>Đã hủy</option>
+                            <option value="returned" {% if order.status == 'returned' %}selected{% endif %}>Hoàn hàng</option>
+                        </select>
+                    </td>
+                    <td>
+                        <a href="{% url 'view_order' order.id %}">
+                            <button type="button">Xem</button>
+                        </a>
+                        <!--<button onclick="editOrder({{ order.id }})">Sửa</button>-->
+                        <button onclick="deleteOrder({{ order.id }})">Xóa</button>          
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5">Không có dữ liệu</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div id="pagination" class="pagination-container">
+            <div class="pagination">
+                {% if orders.has_previous %}
+                    <a href="?page=1">Trang đầu</a>
+                    <a href="?page={{ orders.previous_page_number }}">Trước</a>
+                {% endif %}
+            </div>
+        
+            <span>
+                Trang {{ orders.number }} / {{ orders.paginator.num_pages }}
+            </span>
+        
+            <div class="pagination">
+                {% if orders.has_next %}
+                    <a href="?page={{ orders.next_page_number }}">Sau</a>
+                    <a href="?page={{ orders.paginator.num_pages }}">Trang cuối</a>
+                {% endif %}
+            </div>
+        </div>
+    </body>
+    
+</html>
+
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleBtn = document.getElementById('toggle-date-search');
+        const dateForm = document.getElementById('date-search-form');
+        const searchBtn = document.querySelector('#date-search-form button');
+
+        if (toggleBtn && dateForm) {
+            toggleBtn.addEventListener('click', function () {
+                dateForm.style.display = (dateForm.style.display === 'none') ? 'block' : 'none';
+            });
+        }
+
+        // Khi nhấn nút tìm kiếm
+        if (searchBtn) {
+            searchBtn.addEventListener('click', function(event) {
+                event.preventDefault();  // Ngừng reload trang
+
+                const startText = document.getElementById("start_date_text").value;
+                const endText = document.getElementById("end_date_text").value;
+
+                const parsedStart = parseDateToISO(startText);
+                const parsedEnd = parseDateToISO(endText);
+
+                if (!parsedStart || !parsedEnd) {
+                    alert("Vui lòng nhập đúng định dạng dd/mm/yyyy.");
+                    return false;
+                }
+
+                document.getElementById("start_date").value = parsedStart;
+                document.getElementById("end_date").value = parsedEnd;
+
+                const startDate = document.getElementById('start_date').value;
+                const endDate = document.getElementById('end_date').value;
+
+                console.log("Tìm kiếm với ngày bắt đầu:", startDate, "và ngày kết thúc:", endDate);  // Debug
+
+                // Gửi dữ liệu qua AJAX
+                const url = `/search_orders/?start_date=${startDate}&end_date=${endDate}`;
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            renderOrderTable(data.orders, data.pagination_html);
+                        } else {
+                            console.error("Lỗi tìm kiếm:", data.message);
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+            });
+        }
+    });
+    
+    function parseDateToISO(input) {
+        const parts = input.split('/');
+        if (parts.length !== 3) return null;
+
+        const [day, month, year] = parts;
+        if (!day || !month || !year) return null;
+
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+
+</script>
+
+
+{% endblock %}

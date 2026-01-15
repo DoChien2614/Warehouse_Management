@@ -1,0 +1,12 @@
+{% extends "page1/base.html" %}
+{% block content %}
+    <h2>Sửa quyền nhân viên</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <p>
+            <label for="id_role">Vai trò:</label>
+            {{ form.role }}
+        </p>
+        <button type="submit">Lưu thay đổi</button>
+    </form>
+{% endblock %}

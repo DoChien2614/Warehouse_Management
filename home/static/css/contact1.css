@@ -1,0 +1,48 @@
+.content{
+    display: flex;
+    justify-content: center; /* căn giữa theo chiều ngang */
+    align-items: center;     /* căn giữa theo chiều dọc */
+    background-image: url(https://www.sapo.vn/Themes/Portal/Default/StylesV2/images/home/img-map.jpg);
+    margin-top: 0;
+    height: 100vh;
+}
+
+.contact-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Cuộn khi nội dung quá dài */
+    max-height: 100%; /* Giới hạn chiều cao */
+    
+}
+
+.contact-container h2, .contact-container h3 {
+    text-align: center;
+    color: #333;
+}
+
+.contact-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-info li {
+    font-size: 16px;
+    margin: 10px 0;
+    margin-bottom: 16px;
+}
+
+.contact-info a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+

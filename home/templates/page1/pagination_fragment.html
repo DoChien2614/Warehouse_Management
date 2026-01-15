@@ -1,0 +1,35 @@
+<div class="pagination-container">
+    <div class="pagination">
+        {% if orders.has_previous %}
+            {% if query %}
+                <a href="#" onclick="searchOrdersByKeyword('{{ query }}', {{ 1 }})">Trang đầu</a>
+                <a href="#" onclick="searchOrdersByKeyword('{{ query }}', {{ orders.previous_page_number }})">Trước</a>
+            {% elif start_date and end_date %}
+                <a href="#" onclick="searchOrdersByDate('{{ start_date }}', '{{ end_date }}', {{ 1 }})">Trang đầu</a>
+                <a href="#" onclick="searchOrdersByDate('{{ start_date }}', '{{ end_date }}', {{ orders.previous_page_number }})">Trước</a>
+            {% else %}
+                <a href="#" onclick="filterByStatus(currentStatus, {{ 1 }})">Trang đầu</a>
+                <a href="#" onclick="filterByStatus(currentStatus, {{ orders.previous_page_number }})">Trước</a>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <span>
+        Trang {{ orders.number }} / {{ orders.paginator.num_pages }}
+    </span>
+
+    <div class="pagination">
+        {% if orders.has_next %}
+            {% if query %}
+                <a href="#" onclick="searchOrdersByKeyword('{{ query }}', {{ orders.next_page_number }})">Sau</a>
+                <a href="#" onclick="searchOrdersByKeyword('{{ query }}', {{ orders.paginator.num_pages }})">Trang cuối</a>
+            {% elif start_date and end_date %}
+                <a href="#" onclick="searchOrdersByDate('{{ start_date }}', '{{ end_date }}', {{ orders.next_page_number }})">Sau</a>
+                <a href="#" onclick="searchOrdersByDate('{{ start_date }}', '{{ end_date }}', {{ orders.paginator.num_pages }})">Trang cuối</a>
+            {% else %}
+                <a href="#" onclick="filterByStatus(currentStatus, {{ orders.next_page_number }})">Sau</a>
+                <a href="#" onclick="filterByStatus(currentStatus, {{ orders.paginator.num_pages }})">Trang cuối</a>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>

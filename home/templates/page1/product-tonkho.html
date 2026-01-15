@@ -1,0 +1,254 @@
+{% extends "page1/base.html" %}
+
+{% block title %}Product{% endblock %}
+
+{% block content %}
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style-product-tonkho.css' %}">
+    <div class="header-row" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <h2 style="margin-top: 25px; margin-left: 20px">Danh Sách Sản Phẩm Tồn Kho</h2>
+        
+        <!-- Form tìm kiếm -->
+        <form method="get" class="search-form" style="display: flex; margin-right:20px; margin-top:25px; align-items: center; gap: 8px;">
+            <input type="text" name="q" placeholder="Tìm kiếm sản phẩm..." value="{{ query|default:'' }}">
+            <select name="search_by">
+                <option value="name" {% if request.GET.search_by == 'name' %}selected{% endif %}>Tên sản phẩm</option>
+                <option value="date_added" {% if request.GET.search_by == 'date_added' %}selected{% endif %}>Ngày thêm</option>
+                <option value="supplier" {% if request.GET.search_by == 'supplier' %}selected{% endif %}>Nhà cung cấp</option>
+            </select>
+            {% if category %}
+                <input type="hidden" name="category" value="{{ category }}">
+            {% endif %}
+            <button type="submit" title="Tìm kiếm">Tìm 🔍</button>
+        </form>    
+    </div>
+
+    <!-- Bộ lọc sản phẩm, nút Sản phẩm còn ít và nút Thêm sản phẩm -->
+    <div class="header-container">
+        <div class="dropdown">
+            <button class="dropdown-toggle" onclick="toggleDropdown()">Phân loại</button>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="?category=all" class="{% if category == 'all' %}active{% endif %}">Tất Cả</a>
+                <a href="?category=ao" class="{% if category == 'ao' %}active{% endif %}">Áo</a>
+                <a href="?category=quan" class="{% if category == 'quan' %}active{% endif %}">Quần</a>
+                <a href="?category=vay" class="{% if category == 'vay' %}active{% endif %}">Váy</a>
+                <a href="?category=tat" class="{% if category == 'tat' %}active{% endif %}">Tất</a>
+                <a href="?category=giay" class="{% if category == 'giay' %}active{% endif %}">Giày</a>
+                <a href="?category=dep" class="{% if category == 'dep' %}active{% endif %}">Dép</a>
+                <a href="?category=mu" class="{% if category == 'mu' %}active{% endif %}">Mũ</a>
+                <a href="?category=thatlung" class="{% if category == 'thatlung' %}active{% endif %}">Thắt Lưng</a>
+                <a href="?category=khac" class="{% if category == 'khac' %}active{% endif %}">Khác</a>
+            </div>
+        </div>
+        
+        <!-- Nút Sản phẩm còn ít -->
+        <a href="?filter=lowstock" class="less-btn {% if request.GET.filter == 'lowstock' %}active{% endif %}" style="margin-left: 20px;">Sản phẩm còn ít</a>
+
+        <!-- Nút Thêm sản phẩm -->
+        <button id="show-form-btn" class="add-product-btn" onclick="toggleForm()">Nhập kho</button>
+    </div>
+
+    <!-- Lớp phủ nền tối -->
+    <div id="overlay" class="overlay" onclick="toggleForm()"></div>
+
+    <!-- Form thêm sản phẩm (Ẩn mặc định) -->
+    <div class="add-product-form" id="product-form">
+        <form method="POST" action="{% url 'add_product' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div style="text-align: center;">
+                <h2>Nhập sản phẩm mới</h2>
+            </div>              
+            {{ form.as_p }}
+            <button type="submit" class="confirm-btn">Xác nhận</button>
+            <button type="button" class="cancel-btn" onclick="toggleForm()">Hủy</button>
+        </form>
+    </div>
+
+
+    <!-- Lớp phủ nền tối chỉ dành cho Form Sửa -->
+    <div id="edit-overlay" class="overlay" onclick="closeEditForm()"></div>
+
+    <!-- Form sửa sản phẩm (Ẩn mặc định) -->
+    <div class="edit-product-form" id="edit-product-form">
+        <h2>Sửa sản phẩm</h2>
+        <form id="edit-form" method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="edit-form-grid">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="edit-product-name">Tên sản phẩm:</label>
+                        <input type="text" id="edit-product-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-category">Danh mục:</label>
+                        <select id="edit-category" name="category">
+                            {% for cat in categories %}
+                                <option value="{{ cat.id }}">{{ cat.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="form-group">
+                        <label for="edit-quantity">Số lượng:</label>
+                        <input type="number" id="edit-quantity" name="quantity" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-purchase-price">Giá nhập:</label>
+                        <input type="number" step="0.01" id="edit-purchase-price" name="purchase_price" required>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="form-group">
+                        <label for="edit-sale-price">Giá bán:</label>
+                        <input type="number" step="0.01" id="edit-sale-price" name="sale_price" required>
+                    </div>    
+                    <div class="form-group">
+                        <label for="edit-description">Mô tả:</label>
+                        <textarea id="edit-description" name="description" rows="3"></textarea>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="form-group">
+                        <label for="edit-image">Ảnh sản phẩm:</label>
+                        <input type="file" id="edit-image" name="image" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-supplier-name">Tên nhà cung cấp:</label>
+                        <input type="text" id="edit-supplier-name" name="supplier" required>
+                    </div>
+                </div>
+            
+                <!-- Hiển thị ảnh hiện tại -->
+                <div class="row">
+                    <div class="form-group" style="width: 100%;">
+                        <label>Ảnh hiện tại:</label>
+                        <img id="current-product-image" src="" alt="Ảnh sản phẩm" style="max-width: 100px; display: none;">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Nhóm nút -->
+            <div class="button-group">
+                <button type="submit" class="confirm-btn">Lưu</button>
+                <button type="button" class="cancel-btn" onclick="closeEditForm()">Hủy</button>
+            </div>
+        </form>
+    </div>
+    
+
+
+
+
+    <!-- Hiển thị sản phẩm -->
+    <div class="product-list">
+        {% for product in products %}
+        <div class="product-grid-row">
+            <!-- Ảnh -->
+            <div class="product-grid-img">
+                <a href="{% url 'product_detail' product.id %}">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                    {% else %}
+                        <div class="product-image no-image">
+                            Không có ảnh
+                        </div>
+                    {% endif %}
+                </a>
+            </div>
+
+            <!-- Tên sản phẩm -->
+            <div class="product-grid-name">
+                <a href="{% url 'product_detail' product.id %}" class="product-name-link">{{ product.name }}</a>
+            </div>
+
+            <!-- Số lượng -->
+            <div class="product-grid-quantity">
+                Số lượng: {{ product.quantity }}
+            </div>
+
+            <!-- Ngày thêm -->
+            <div class="product-grid-date">
+                Ngày thêm: {{ product.date_added|date:"d/m/Y" }}
+            </div>
+
+            <!-- NCC -->
+            <div class="product-grid-supplier">
+                NCC: {{ product.supplier }}
+            </div>
+
+            <!-- Sửa / Xóa -->
+            <div class="product-actions">
+                <a href="#" onclick="toggleEditForm('{{ product.id }}', '{{ product.name|escapejs }}', '{{ product.category }}', '{{ product.quantity }}', '{% if product.image and product.image.url %}{{ product.image.url }}{% else %}{% static 'images/no-image.jpg' %}{% endif %}', '{{ product.purchase_price }}', '{{ product.sale_price }}', '{{ product.description|escapejs }}', '{{ product.supplier|escapejs }}')">Sửa</a>
+                |
+                <a href="{% url 'delete_product' product.id %}" onclick="return confirm('Xóa sản phẩm này?');">Xóa</a>
+            </div>
+        </div>
+        {% empty %}
+            <p>Không có sản phẩm nào trong danh mục này.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Sắp xếp -->
+    <div class="sort-options">
+        <label for="sort">Sắp xếp theo:</label>
+        <select id="sort" name="order_by" onchange="window.location.href=this.value;">
+            <option value="?category={{ category }}&order_by=-name{% if request.GET.order_by == '-name' %}&page={{ request.GET.page }}{% endif %}" {% if order_by == '-name' %}selected{% endif %}>Tên (A-Z)</option>
+            <option value="?category={{ category }}&order_by=name{% if request.GET.order_by == 'name' %}&page={{ request.GET.page }}{% endif %}" {% if order_by == 'name' %}selected{% endif %}>Tên (Z-A)</option>
+            <option value="?category={{ category }}&order_by=-date_added{% if request.GET.order_by == '-date_added' %}&page={{ request.GET.page }}{% endif %}" {% if order_by == '-date_added' %}selected{% endif %}>Ngày thêm (Mới-Cũ)</option>
+            <option value="?category={{ category }}&order_by=date_added{% if request.GET.order_by == 'date_added' %}&page={{ request.GET.page }}{% endif %}" {% if order_by == 'date_added' %}selected{% endif %}>Ngày thêm (Cũ-Mới)</option>
+        </select>
+    </div>
+    
+    
+    <!-- Phân trang -->
+    <div class="pagination">
+        {% if products.has_previous %}
+            <a href="?category={{ category }}&order_by={{ order_by }}&page=1">Trang đầu</a>
+            <a href="?category={{ category }}&order_by={{ order_by }}&page={{ products.previous_page_number }}">« Trước</a>
+        {% endif %}
+    
+        <span>Trang {{ products.number }} / {{ products.paginator.num_pages }}</span>
+    
+        {% if products.has_next %}
+            <a href="?category={{ category }}&order_by={{ order_by }}&page={{ products.next_page_number }}">Tiếp »</a>
+            <a href="?category={{ category }}&order_by={{ order_by }}&page={{ products.paginator.num_pages }}">Trang cuối</a>
+        {% endif %}
+    </div>
+    
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const filterButtons = document.querySelectorAll(".filter-btn");
+            const products = document.querySelectorAll(".product");
+
+            filterButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    // Bỏ active khỏi tất cả nút
+                    filterButtons.forEach(btn => btn.classList.remove("active"));
+                    this.classList.add("active");
+                    
+                    const category = this.getAttribute("data-category");
+                    
+                    products.forEach(product => {
+                        if (category === "all" || product.getAttribute("data-category") === category) {
+                            product.style.display = "block";
+                        } else {
+                            product.style.display = "none";
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+    
+    
+
+    <script src="{% static 'js/product-tonkho.js' %}"></script>
+
+{% endblock %}

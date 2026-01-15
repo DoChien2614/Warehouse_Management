@@ -1,0 +1,151 @@
+/* Định dạng bảng */
+.table {
+    width: 97%;
+    margin: 20px 0;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-collapse: collapse;
+    overflow-y: auto; /* Bật thanh cuộn */
+}
+
+/* Định dạng cho các ô bảng */
+.table th, .table td {
+    padding: 12px 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+/* Màu nền cho tiêu đề bảng */
+.table thead {
+    background-color: #28a745;
+    color: #fff;
+}
+
+/* Dòng bảng với màu nền sáng và tối */
+.table-striped tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+/* Màu nền khi hover */
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Định dạng cho các nút sửa và xóa */
+.action-buttons a {
+    margin-right: 5px;
+    text-decoration: none;
+}
+
+/* Nút sửa xóa */
+.product-actions {
+    display: flex;
+    gap: 15px; /* Tạo khoảng cách giữa các nút */
+}
+
+.product-actions a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    transition: color 0.2s ease-in-out;
+}
+
+.product-actions a:hover {
+    color: #ff0000; /* Đổi màu khi hover */
+    text-decoration: underline;
+}
+
+/* Định dạng cho thông báo khi không có dữ liệu */
+.text-center {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+
+
+
+/* Lớp phủ nền tối */
+.overlay {
+    display: none; /* Ẩn mặc định */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); /* Màu đen trong suốt */
+    z-index: 1001; /* Dưới form nhưng trên nội dung khác */
+}
+
+/* Form sửa sản phẩm */
+.edit-product-form {
+    display: none; /* Ẩn mặc định */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 0px 25px 25px;
+    border-radius: 20px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1002;
+    width: 450px;
+}
+
+/* Tiêu đề */
+.edit-product-form h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Nhãn (label) */
+.edit-product-form label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Input & Select */
+.edit-product-form input,
+.edit-product-form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+/* Nhóm nút */
+.edit-product-form .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+/* Nút Lưu & Hủy */
+.edit-product-form button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Nút Lưu */
+.edit-product-form .confirm-btn {
+    background: green;
+    color: white;
+    margin-right: 15px;
+}
+
+/* Nút Hủy */
+.edit-product-form .cancel-btn {
+    background: red;
+    color: white;
+}

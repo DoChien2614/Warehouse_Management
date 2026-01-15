@@ -1,0 +1,84 @@
+{% extends "page1/base.html" %}
+{% load static %}
+{% block title %}Guide{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/guide.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="guide">
+    <div class="guide-container">
+        <h2>
+            <i class="icon ph-bold ph-info"></i>
+            <span>Hướng Dẫn Sử Dụng Trang Web</span>
+        </h2>
+        
+        <div class="guide-section">
+            <h3>
+                <i class="icon ph-bold ph-house"></i>
+                <span>1. Trang Chủ</span>
+            </h3>
+            <p>Trang chủ hiển thị thông tin tổng quan và các thông báo quan trọng từ hệ thống.</p>
+        </div>
+
+        <div class="guide-section">
+            <h3>
+                <i class="icon ph-bold ph-package"></i>
+                <span>2. Quản Lý Đơn Hàng</span>
+            </h3>
+            <p>Trong mục "Đơn Hàng", bạn có thể:</p>
+            <ul>
+                <li>Xem danh sách các đơn hàng.</li>
+                <li>Kiểm tra trạng thái đơn hàng.</li>
+                <li>Cập nhật thông tin đơn hàng.</li>
+            </ul>
+        </div>
+
+        <div class="guide-section">
+            <h3>
+                <i class="icon ph-bold ph-shopping-cart"></i>
+                <span>3. Quản Lý Sản Phẩm</span>
+            </h3>
+            <p>Chức năng "Sản Phẩm" giúp bạn:</p>
+            <ul>
+                <li>Thêm, chỉnh sửa hoặc xóa sản phẩm.</li>
+                <li>Xem thông tin chi tiết từng sản phẩm.</li>
+            </ul>
+        </div>
+
+        <div class="guide-section">
+            <h3>
+                <i class="icon ph-bold ph-book-open-text"></i>
+                <span>4. Xem Hướng Dẫn</span>
+            </h3>
+            <p>Trang "Hướng Dẫn" giúp bạn nắm rõ cách sử dụng hệ thống.</p>
+        </div>
+
+        <div class="guide-section">
+            <h3>
+                <i class="icon ph-bold ph-phone-call"></i>
+                <span>5. Liên Hệ</span>
+            </h3>
+            <p>Chức năng này hiển thị thông tin liên hệ và hỗ trợ khách hàng.</p>
+        </div>
+
+        <div class="guide-section">
+            <h3>
+                <i class="icon ph-bold ph-magnifying-glass"></i>
+                <span>6. Tìm Kiếm</span>
+            </h3>
+            <p>Sử dụng thanh tìm kiếm phía trên để tra cứu nhanh sản phẩm hoặc đơn hàng.</p>
+        </div>
+
+        <div class="guide-section">
+            <h3>
+                <i class="icon ph-bold ph-sign-out"></i>
+                <span>7. Đăng Xuất</span>
+            </h3>
+            <p>Nhấn vào "Đăng Xuất" để thoát khỏi hệ thống một cách an toàn.</p>
+        </div>
+    </div>
+</div>
+
+{% endblock  %}

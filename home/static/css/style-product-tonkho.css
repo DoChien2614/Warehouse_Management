@@ -1,0 +1,410 @@
+
+/* Tìm kiếm */
+.search-form {
+    margin-top: 15px;
+
+}
+
+.search-form select{
+    border-radius: 10px;
+    padding: 6px 12px;
+
+}
+.search-form input[type="text"] {
+    margin-left: 20px;
+    padding: 6px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 250px;
+}
+.search-form button {
+    padding: 6px 12px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* Căn chỉnh header */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+    margin: 20px 0 10px 0; /* Tăng khoảng cách trên */
+    position: relative; /* Để form có thể đặt chính xác */
+    flex-wrap: wrap; /* Đảm bảo không bị vỡ layout khi thu nhỏ màn hình */
+}
+
+/* Nút phân loại */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.dropdown-toggle {
+    padding: 8px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    z-index: 100;
+    margin-top: 5px;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #333;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown.show .dropdown-menu {
+    display: block;
+}
+
+
+/* Nút còn ít */
+.less-btn {
+    border-radius: 20px;  /* Bo góc */
+    padding: 8px 16px;  /* Khoảng cách bên trong */
+    background-color: #e33f3f;  /* Màu nền */
+    border: none;  /* Bỏ viền */
+    color: white;  /* Màu chữ */
+    text-decoration: none; /* Bỏ gạch chân */
+    display: inline-block;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.less-btn:hover {
+    background-color: #b40404; /* Hiệu ứng hover */
+}
+
+
+/* Nút "Thêm sản phẩm" */
+#show-form-btn {
+    border-radius: 20px;  /* Bo góc */
+    padding: 8px 16px;  /* Khoảng cách bên trong */
+    background-color: #28a745;  /* Màu nền */
+    border: none;  /* Bỏ viền */
+    color: white;  /* Màu chữ */
+    text-decoration: none; /* Bỏ gạch chân */
+    display: inline-block;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-left: auto; /* Đẩy nút về phía bên phải */
+    margin-right: 20px
+}
+
+#show-form-btn:hover {
+    background-color: #218838; /* Hiệu ứng hover */
+}
+
+/* Phân trang */
+.pagination {
+    position: fixed;
+    bottom: 10px;  /* Cách đáy */
+    left: 58.5%;
+    transform: translateX(-50%); /* Canh giữa */
+    background-color: white; 
+    padding: 5px 10px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+    z-index: 1000; /* Đảm bảo hiển thị trên các phần khác */
+}
+
+.pagination a {
+    text-decoration: none;
+    padding: 5px 8px;
+    margin: 0 5px;
+    background-color: #ddd;
+    color: black;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.pagination a:hover {
+    background-color: #bbb;
+}
+
+/* Danh sách sản phẩm */
+.product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    max-height: 500px; /* Điều chỉnh chiều cao tối đa theo ý muốn */
+    overflow-y: auto; /* Bật thanh cuộn */
+}
+
+/* Sản phẩm */
+.product-grid-row {
+    display: grid;
+    grid-template-columns: 70px 1.7fr 1fr 1.4fr 1.2fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.product-grid-img img,
+.product-image.no-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    background-color: #eee;
+    color: #888;
+}
+
+.product-name-link {
+    font-weight: 600;
+    text-decoration: none;
+    color: #333;
+}
+
+.product-grid-date,
+.product-grid-supplier,
+.product-grid-actions {
+    font-size: 15px;
+}
+
+/* Nút sửa xóa */
+.product-actions {
+    display: flex;
+    gap: 15px; /* Tạo khoảng cách giữa các nút */
+}
+
+.product-actions a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    transition: color 0.2s ease-in-out;
+}
+
+.product-actions a:hover {
+    color: #ff0000; /* Đổi màu khi hover */
+    text-decoration: underline;
+}
+
+/* Sắp xếp */
+.sort-options {
+    display: flex;
+    gap: 15px;
+    margin-top: 35px;
+    margin-left: 30px;
+}
+
+.sort-options select {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+
+/* Lớp phủ nền tối */
+.overlay {
+    display: none; /* Ẩn mặc định */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); /* Màu đen trong suốt */
+    z-index: 1001; /* Dưới form nhưng trên nội dung khác */
+}
+
+/* Form thêm sản phẩm */
+#product-form {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background-color: #f9f9f9;
+    width: 450px;
+}
+
+.add-product-form {
+    display: none;
+    position: fixed;
+    font-weight: bold;
+    font-size: 16px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1002;
+    width: 420px;
+}
+
+/* Tiêu đề */
+.add-product-form h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Input & Select */
+.add-product-form input,
+.add-product-form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+/* Nhóm nút */
+.add-product-form .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+
+}
+
+/* Nút Xác nhận & Hủy */
+.add-product-form button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 200px;
+}
+
+.add-product-form .confirm-btn {
+    background: green;
+    color: white;
+    margin-left: 7px;
+    margin-right: 10px;
+}
+
+.add-product-form .cancel-btn {
+    background: red;
+    color: white;
+}
+
+
+/* Form sửa sản phẩm */
+.edit-product-form {
+    display: none; /* Ẩn mặc định */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 0px 25px 25px;
+    border-radius: 20px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1002;
+    width: 600px;
+}
+
+/* Tiêu đề */
+.edit-product-form h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Nhãn (label) */
+.edit-product-form label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Input & Select */
+.edit-product-form input,
+.edit-product-form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+/* Nhóm nút */
+.edit-product-form .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+/* Nút Lưu & Hủy */
+.edit-product-form button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Nút Lưu */
+.edit-product-form .confirm-btn {
+    background: green;
+    color: white;
+    margin-right: 15px;
+}
+
+/* Nút Hủy */
+.edit-product-form .cancel-btn {
+    background: red;
+    color: white;
+}
+
+
+/* Chuyển thành 2 nhãn trên 1 dòng */
+.edit-form-grid .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+.edit-form-grid .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+

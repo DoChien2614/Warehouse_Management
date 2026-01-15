@@ -1,0 +1,71 @@
+{% extends "page1/base.html" %}
+{% load static %}
+
+{% block title %}Thông Tin Kho Hàng{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Phần hiển thị cho Quản lý (Manager) -->
+    {% if is_manager %}
+    <div class="update-info">
+        <h2>Cập nhật thông tin kho hàng</h2>
+        <form id="storeForm" method="POST">
+            {% csrf_token %}
+            <p>
+                <label for="id_name">Tên kho hàng:</label>
+                {{ form.name }}
+            </p>
+            <p>
+                <label for="id_address">Địa chỉ kho hàng:</label>
+                {{ form.address }}
+            </p>
+            <button type="submit">Lưu thay đổi</button>
+        </form>
+
+        <hr>
+
+        <form id="deleteForm" method="POST" action="{% url 'delete_store' %}">
+            {% csrf_token %}
+            <button type="submit" style="background-color: red; color: white;">🗑️ Xoá kho hàng</button>
+        </form>
+
+        <!-- Thêm nút thêm nhân viên -->
+        <div>
+            <a href="{% url 'add_employee' %}">Thêm nhân viên</a>
+            <h3>Danh sách nhân viên</h3>
+            <ul>
+                {% for store_user in store.storeuser_set.all %}
+                    <li>
+                        {{ store_user.user.username }} - {{ store_user.role }}
+                        {% if store_user.role == 'manager' %}
+                            <strong>(Quản lý)</strong>
+                        {% endif %}
+                        <!-- Sửa quyền -->
+                        <a href="{% url 'edit_employee_role' store_user.user.id %}">Sửa quyền</a>
+                        
+                        <!-- Xoá nhân viên -->
+                        <a href="{% url 'remove_employee' store_user.user.id %}" 
+                        onclick="return confirm('Bạn có chắc chắn muốn xoá nhân viên này không?')">Xoá</a>
+                    </li>
+                {% empty %}
+                    <li>Chưa có nhân viên nào.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <hr>
+    </div>
+    {% endif %}
+
+    <!-- Phần hiển thị cho Nhân viên (Staff) -->
+    {% if is_staff %}
+    <div class="store-info">
+        <h2>Thông tin kho hàng</h2>
+        <p><strong>Tên kho hàng:</strong> {{ store.name }}</p>
+        <p><strong>Địa chỉ kho hàng:</strong> {{ store.address }}</p>
+    </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "page1/base.html" %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/home1.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="slide-show">
+    <div class="list-images">
+        <img src="{% static 'images/1.png' %}" alt="">
+        <img src="{% static 'images/2.jpg' %}" alt="">
+        <img src="{% static 'images/3.png' %}" alt="">
+        <img src="{% static 'images/4.jpg' %}" alt="">
+        <img src="{% static 'images/5.jpg' %}" alt="">
+    </div>
+    <div class="btns">
+        <div class="btn-left btn"><i class='bx bx-chevron-left'></i></div>
+        <div class="btn-right btn"><i class='bx bx-chevron-right'></i></div>
+    </div>
+    <div class="index-images">
+        <div class="index-item index-item-0 selected"></div>
+        <div class="index-item index-item-1"></div>
+        <div class="index-item index-item-2"></div>
+        <div class="index-item index-item-3"></div>
+        <div class="index-item index-item-4"></div>
+    </div>
+    <script src="{% static 'js/home.js' %}"></script>
+</div>
+<div class="news">
+    <h1>Hệ Thống Quản Lý Kho Hàng</h1>
+    <p>Chào mừng bạn đến với hệ thống quản lý kho hàng của chúng tôi! Hệ thống giúp bạn theo dõi, kiểm soát và tối ưu hóa việc quản lý hàng hóa một cách dễ dàng.</p>
+
+    <h2>Tính Năng Chính</h2>
+    <ul>
+        <li>Quản lý nhập và xuất kho nhanh chóng.</li>
+        <li>Theo dõi số lượng hàng hóa trong thời gian thực.</li>
+        <li>Hệ thống báo cáo chi tiết về tình trạng kho.</li>
+        <li>Tìm kiếm và lọc sản phẩm dễ dàng.</li>
+        <li>Kiểm soát hàng tồn kho.</li>
+    </ul>
+
+    <h2>Tại Sao Chọn Chúng Tôi?</h2>
+    <p>Với giao diện thân thiện, dễ sử dụng, cùng với công nghệ hiện đại, hệ thống của chúng tôi giúp doanh nghiệp quản lý kho hiệu quả, giảm thiểu sai sót và tiết kiệm thời gian.</p>
+    
+    <p><strong>Bắt đầu ngay hôm nay để trải nghiệm sự khác biệt!</strong></p>
+</div>
+
+{% endblock  %}

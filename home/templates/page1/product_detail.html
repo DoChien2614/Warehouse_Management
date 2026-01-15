@@ -1,0 +1,26 @@
+{% extends "page1/product-tonkho.html" %}
+
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/product-detail.css' %}">
+<h2>Chi tiết sản phẩm</h2>
+<div class="card" style="max-width: 1000px;">
+    {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top">
+    {% endif %}
+    <div class="card-body">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p><strong>Mã sản phẩm:</strong> {{ product.id }}</p>
+        <p><strong>Loại:</strong> {{ product.get_category_display }}</p>
+        <p><strong>Số lượng:</strong> {{ product.quantity }}</p>
+        <p><strong>Giá nhập:</strong> {{ product.purchase_price }}₫</p>
+        <p><strong>Giá bán:</strong> {{ product.sale_price }}₫</p>
+        <p><strong>Mô tả:</strong> {{ product.description|default:"(Không có)" }}</p>
+        <p><strong>Nhà cung cấp:</strong> {{ product.supplier|default:"(Không có)" }}</p>
+        <p><strong>Ngày thêm:</strong> {{ product.date_added|date:"d/m/Y H:i" }}</p>
+        <p><strong>Ngày cập nhật:</strong> {{ product.date_updated|date:"d/m/Y H:i" }}</p>
+        <a href="{% url 'get_product_tonKho' %}" class="btn btn-secondary">Quay lại</a>
+    </div>
+</div>
+{% endblock %}

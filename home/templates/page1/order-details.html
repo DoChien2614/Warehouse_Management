@@ -1,0 +1,179 @@
+{% extends 'page1/base.html' %}
+
+{% block content %}
+    <style>
+        h2 {
+            text-align: left;
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            max-width: 800px;
+            margin: 50px auto;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .card-body {
+            padding: 30px 40px;
+            flex: 2;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .info-table, .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            margin-top: 10px;
+        }
+
+        .info-table td {
+            padding: 8px 12px;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .info-table td strong {
+            color: #222;
+            font-weight: 600;
+        }
+
+        .product-table th, .product-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .product-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 15px;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            color: #fff;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-left: 20px;
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+
+        @media (max-width: 600px) {
+            .card {
+                margin: 10px;
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+            }
+
+            .info-table td, .product-table td {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+
+    <a href="{% url 'order' %}" class="back-link">&larr; Quay lại danh sách đơn hàng</a>
+
+
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title">Đơn hàng #{{ order.order_code }}</div>
+
+            <h4>Thông tin khách hàng</h4>
+            <table class="info-table">
+                <tr>
+                    <td><strong>Tên khách hàng:</strong></td>
+                    <td>{{ order.customer_name }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Địa chỉ:</strong></td>
+                    <td>{{ order.customer_address }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Số điện thoại:</strong></td>
+                    <td>{{ order.customer_phone }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Ngày đặt:</strong></td>
+                    <td>{{ order.order_date|date:"d-m-Y" }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Đơn vị vận chuyển:</strong></td>
+                    <td>{{ order.shipping_unit }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Trạng thái:</strong></td>
+                    <td>{{ order.get_status_display }}</td>
+                </tr>
+            </table>
+
+            <h4>Sản phẩm trong đơn hàng</h4>
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>Tên sản phẩm</th>
+                        <th>Danh mục</th>
+                        <th>Số lượng</th>
+                        <th>Giá bán (VNĐ)</th>
+                        <th>Kho hàng</th>  <!-- Thêm cột kho hàng -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order_product in order.order_products.all %}
+                        <tr>
+                            <td>{{ order_product.product.name }}</td>
+                            <td>{{ order_product.product.get_category_display }}</td>
+                            <td>{{ order_product.quantity }}</td>
+                            <td>{{ order_product.product.sale_price|floatformat:0 }}</td>
+                            <td>{{ order_product.warehouse.name }}</td>  <!-- Hiển thị kho hàng -->
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5">Không có sản phẩm trong đơn hàng.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p style="text-align: right; font-weight: bold; margin-top: 20px;">
+                Tổng giá trị đơn hàng: {{ order.total_value|floatformat:0}} VNĐ
+            </p>                    
+        </div>
+    </div>
+{% endblock %}

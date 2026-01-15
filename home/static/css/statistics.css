@@ -1,0 +1,131 @@
+/* === Tổng thể === */
+.container {
+    max-width: 1600px;
+    margin: auto;
+}
+
+/* === Tiêu đề chính === */
+h2 {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* === Điều khiển thống kê === */
+.statistics-controls {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.stat-btn {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    margin: 5px;
+    padding: 10px 20px;
+    font-weight: 500;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.stat-btn:hover {
+    background-color: #118b2e;
+}
+
+/* === Section chính === */
+.statistics-content {
+    max-height: 550px; /* bạn có thể điều chỉnh theo ý muốn: 400px, 600px,... */
+    overflow-y: auto;
+    padding-right: 10px; /* giúp tránh che nội dung bởi thanh cuộn */
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    background-color: #fff;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #343a40;
+    margin-bottom: 16px;
+    border-left: 5px solid #28a745;
+    padding-left: 10px;
+}
+
+/* === Card thống kê === */
+.stat-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e0e0e0;
+}
+
+.stat-card h5 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* === Bảng dữ liệu === */
+.table {
+    width: 100%;
+    background-color: #fff;
+    border-collapse: collapse;
+}
+
+.table thead {
+    background-color: #28a745;
+    color: white;
+}
+
+.table th,
+.table td {
+    padding: 10px 12px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .stat-btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+.total-revenue-summary {
+    margin-left: 20px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+
+.stat-content {
+    display: none; /* Mặc định ẩn phần nội dung */
+}
+
+.stat-card h5 {
+    cursor: pointer; /* Khi trỏ vào sẽ hiện bàn tay */
+}
+
+.toggle-section {
+    cursor: pointer;
+}

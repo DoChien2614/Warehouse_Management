@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: url(https://sapo.dktcdn.net/sso-service/images/background-bottom-pos-app.svg) no-repeat fixed bottom;
+}
+
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+}
+
+input[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-left: 12px;
+}
+
+input[type="submit"]:hover {
+    background-color: #218838;
+}
+
+.container {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    width: 360px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Hiệu ứng hover cho form */
+.container:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.errorlist {
+    color: red;
+    font-weight: bold;
+    list-style: none;
+    padding: 0;
+}

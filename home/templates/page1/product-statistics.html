@@ -1,0 +1,377 @@
+{% extends 'page1/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/statistics.css' %}">
+
+<h2 class="mb-4">Thống Kê Kho Hàng</h2>
+
+<div class="statistics-controls">
+    <button id="btn-import" class="stat-btn">Nhập Hàng</button>
+    <button id="btn-export" class="stat-btn">Xuất Hàng</button>
+    <button id="btn-revenue" class="stat-btn">Doanh Thu</button>
+</div>
+
+<div class="statistics-content mt-4">
+    <!-- Nhập hàng -->
+    <div id="import-stats" class="stat-section">
+        <h4 class="section-title">Thống kê nhập hàng</h4>
+
+        <div class="stat-card">
+            <h5 class="toggle-section">Số lượng hàng nhập theo ngày</h5>
+            <div class="stat-content">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Ngày</th>
+                                <th>Tổng số lượng hàng nhập</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in import_by_day %}
+                            <tr>
+                                <td>{{ row.date|date:"d/m/Y" }}</td>
+                                <td>{{ row.total_quantity }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2" class="text-center">Không có dữ liệu</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <h5 class="toggle-section">Số lượng hàng nhập theo tháng</h5>
+            <div class="stat-content">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Tháng</th>
+                                <th>Tổng số lượng hàng nhập</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in import_by_month %}
+                            <tr>
+                                <td>{{ row.month|date:"m/Y" }}</td>
+                                <td>{{ row.total_quantity }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2" class="text-center">Không có dữ liệu</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <h5 class="toggle-section">Số lượng hàng nhập theo năm</h5>
+            <div class="stat-content">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Năm</th>
+                                <th>Tổng số lượng hàng nhập</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in import_by_year %}
+                            <tr>
+                                <td>{{ row.year|date:"Y" }}</td>
+                                <td>{{ row.total_quantity }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2" class="text-center">Không có dữ liệu</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <h5 class="toggle-section">Nhà cung cấp nhập nhiều hàng nhất</h5>
+            <div class="stat-content">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Nhà cung cấp</th>
+                                <th>Tổng số lượng hàng nhập</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for supplier in top_suppliers %}
+                            <tr>
+                                <td>{{ supplier.name|default:"Không xác định" }}</td>
+                                <td>{{ supplier.total_quantity }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2" class="text-center">Không có dữ liệu</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <h5 class="toggle-section">Loại sản phẩm được nhập nhiều nhất</h5>
+            <div class="stat-content">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Loại sản phẩm</th>
+                                <th>Tổng số lượng hàng nhập</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for category in top_import_categories %}
+                            <tr>
+                                <td>{{ category.name }}</td>
+                                <td>{{ category.total_quantity }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2" class="text-center">Không có dữ liệu</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Xuất hàng -->
+    <div id="export-stats" class="stat-section">
+        <h4 class="section-title">Thống kê xuất hàng</h4>
+
+        <div class="stat-card">
+            <h5 class="toggle-section">Số lượng hàng xuất theo ngày</h5>
+            <div class="stat-content">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Ngày</th>
+                                <th>Tổng số lượng hàng xuất</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in export_by_day %}
+                            <tr>
+                                <td>{{ row.date|date:"d/m/Y" }}</td>
+                                <td>{{ row.total_quantity }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2" class="text-center">Không có dữ liệu</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <h5 class="toggle-section">Số lượng hàng xuất theo tháng</h5>
+            <div class="stat-content">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Tháng</th>
+                                <th>Tổng số lượng hàng xuất</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in export_by_month %}
+                            <tr>
+                                <td>{{ row.month|date:"m/Y" }}</td>
+                                <td>{{ row.total_quantity }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2" class="text-center">Không có dữ liệu</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <h5 class="toggle-section">Số lượng hàng xuất theo năm</h5>
+            <div class="stat-content">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Năm</th>
+                                <th>Tổng số lượng hàng xuất</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in export_by_year %}
+                            <tr>
+                                <td>{{ row.year|date:"Y" }}</td>
+                                <td>{{ row.total_quantity }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2" class="text-center">Không có dữ liệu</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <h5 class="toggle-section">Sản phẩm được xuất nhiều nhất</h5>
+            <div class="stat-content">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng đã xuất</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in top_exported_products %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.total_quantity }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2" class="text-center">Không có dữ liệu</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Doanh thu -->
+    <div id="revenue-stats" class="stat-section">
+        <h4 class="section-title">Thống kê doanh thu</h4>
+
+        <div class="stat-card">
+            <h5 class="toggle-section">Doanh thu theo ngày</h5>
+            <div class="stat-content">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Ngày</th>
+                                <th>Doanh thu (đ)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in revenue_by_day %}
+                            <tr>
+                                <td>{{ row.date|date:"d/m/Y" }}</td>
+                                <td>{{ row.total_revenue }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2" class="text-center">Không có dữ liệu</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <h5 class="toggle-section">Doanh thu theo tháng</h5>
+            <div class="stat-content">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Tháng</th>
+                                <th>Doanh thu (đ)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in revenue_by_month %}
+                            <tr>
+                                <td>{{ row.month|date:"m/Y" }}</td>
+                                <td>{{ row.total_revenue }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2" class="text-center">Không có dữ liệu</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <h5 class="toggle-section">Doanh thu theo năm</h5>
+            <div class="stat-content">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Năm</th>
+                                <th>Doanh thu (đ)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in revenue_by_year %}
+                            <tr>
+                                <td>{{ row.year|date:"Y" }}</td>
+                                <td>{{ row.total_revenue }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2" class="text-center">Không có dữ liệu</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <h5 class="toggle-section">Doanh thu theo loại sản phẩm</h5>
+            <div class="stat-content">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Loại sản phẩm</th>
+                                <th>Doanh thu (đ)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in revenue_by_category %}
+                            <tr>
+                                <td>{{ row.category }}</td>
+                                <td>{{ row.total_revenue }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2" class="text-center">Không có dữ liệu</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="total-revenue-summary">
+            <h5><strong>Tổng doanh thu:</strong> <span class="total-amount">{{ total_revenue }} đ</span></h5>
+        </div>
+    </div>
+</div>
+
+
+<script src="{% static 'js/statistics.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,97 @@
+h2 {
+    text-align: left;
+    margin-left: 20px; /* Để cách lề một chút */
+    margin-top: 30px
+}
+
+/* Tổng thể card chi tiết sản phẩm */
+.card {
+    display: flex;
+    max-width: 800px;
+    margin-top: 50px;
+    margin-left: 140px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Hình ảnh sản phẩm */
+.card-img-top {
+    max-width: 100%;
+    height: auto;
+    max-height: 400px; /* hoặc kích thước tùy ý bạn */
+    object-fit: cover;
+    display: block;
+    margin: 20px;
+    border-radius: 20px;
+}
+
+
+/* Nội dung bên trong card */
+.card-body {
+    margin-left: 40px;
+    padding: 20px;
+    background-color: #fff;
+    flex: 2;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.card-body p {
+    margin: 12px 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.card-body p strong {
+    color: #222;
+    font-weight: 600;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 15px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.btn-secondary {
+    margin-bottom: 50px;
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    color: #fff;
+}
+
+.card-body .btn.btn-secondary {
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: 20px;
+
+}
+
+
+/* Responsive */
+@media (max-width: 600px) {
+    .card {
+        margin: 10px;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+    }
+
+    .card-body p {
+        font-size: 0.95rem;
+    }
+}

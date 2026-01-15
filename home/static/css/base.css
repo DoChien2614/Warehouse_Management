@@ -1,0 +1,209 @@
+@import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900);
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    font-family :"Inter",sans-serif;
+}
+
+body{
+    background-color:#5b6677;
+
+}
+
+.container{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+}
+
+.slidebar{
+    width:256px;
+    height: 100vh;
+    display: flex;
+    gap:20px;
+    flex-direction: column;
+    background-color:#fff;
+    padding:  24px;
+    border-radius: 30px;
+}
+
+
+.slidebar .head{
+    display: flex;
+    gap: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f6f6f6;
+}
+
+.information{
+    display: flex;
+    text-decoration: none;
+}
+
+.user-img{
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    /*overflow: hidden;*/
+}
+
+.user-img img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.user-details {
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.user-details .title,
+.menu .title,
+.footer .title{
+    font-size: 10px;
+    font-weight: 500;
+    color: #757575;
+    text-transform: uppercase;
+}
+
+.user-details .name{
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.menu ul li,
+.footer ul li {
+    list-style: none;
+    margin-bottom: 5px;
+}
+
+.menu ul li a,
+.footer a{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #757575;
+    text-decoration: none;
+    padding: 12px 8px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.menu ul li > a:hover,
+.menu ul li.active > a,
+.footer ul li > a:hover,
+.footer ul li.active > a{
+    color:black;
+    background-color: #f6f6f6;
+}
+
+.menu ul li .icon,
+.footer .icon{
+    font-size: 20px ;
+}
+
+.menu ul li .text,
+.footer .text{
+    flex: 1;
+}
+
+.menu ul li .arrow{
+    font-size: 14px ;
+    transition:all 0.3s ;
+}
+
+.menu ul li.active .arrow{
+    transform: rotate(180deg);
+}
+
+.menu .sub-menu{
+    display: none;
+    margin-left: 20px;
+    padding-left: 20px;
+    padding-top: 5px;
+    border-left: 1px solid #f6f6f6;
+}
+
+.menu .sub-menu li a{
+    padding: 10px 8px;
+    font-size: 12px;
+}
+
+.footer {
+    margin-top: auto; /* Đẩy footer xuống cuối */
+    padding: 10px;
+}
+
+.search {
+    position: absolute; /* Cố định vị trí */
+    top: 0; /* Đặt ở đầu trang */
+    left: 256px; /* Dịch sang phải theo chiều rộng sidebar */
+    width: calc(100% - 258px); /* Trừ đi phần sidebar */
+    height: 48px; /* Chiều cao của top-div */
+    background: white; /* Màu nền tùy chỉnh */
+    margin-left: 2px;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border-radius: 30px;
+}
+
+.search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0px 15px;
+    width: 100%;
+    max-width: 450px;
+}
+
+.search input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+    font-size: 14px;
+    background: #f1f1f1;
+    transition: all 0.3s ease-in-out;
+}
+
+.search input:focus {
+    background: #e0e0e0;
+}
+
+.search button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease-in-out;
+}
+
+.search button:hover {
+    background: #218838;
+}
+
+.content{
+    flex: 1;
+    margin-left: 2px;
+    display: inline-block;  
+    background-color:#fff;
+    height: 100vh;
+    border-radius: 30px;
+}

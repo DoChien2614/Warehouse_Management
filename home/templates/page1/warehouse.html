@@ -1,0 +1,147 @@
+{% extends 'page1/base.html' %}
+{% load static %}
+{% block content %}
+<!-- Bảng -->
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        function editWarehouse(warehouseId) {
+            document.getElementById('editWarehouse').style.display = 'block';
+
+            fetch(`/get_warehouse/${warehouseId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('warehouse-id').value = data.id;
+                    document.getElementById('warehouse_name').value = data.name;
+                    document.getElementById('warehouse_address').value = data.address;
+                })
+                .catch(error => console.error('Error fetching warehouse details:', error));
+        }
+
+        function hideEditWarehouse() {
+            document.getElementById('editWarehouse').style.display = 'none';
+            document.getElementById('warehouseForm').reset();
+            document.getElementById('warehouse-id').value = '';
+            document.getElementById('warehouseError').style.display = 'none';
+        }
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#editWarehouseForm').submit(function(event) {
+                event.preventDefault();  // Ngăn không cho submit mặc định
+
+                const formData = $(this).serialize();  // Lấy dữ liệu form
+                const warehouseId = $('#warehouse-id').val();  // Lấy ID kho
+
+                $.ajax({
+                    type: 'POST',
+                    url: `/update_warehouse/${warehouseId}/`,  // Gửi về route cập nhật
+                    data: formData + '&csrfmiddlewaretoken={{ csrf_token }}',  // Thêm CSRF
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            location.reload();  // Reload lại trang
+                        } else {
+                            $('#warehouseError').text(response.message || 'Có lỗi xảy ra').show();
+                        }
+                    },
+                    error: function(xhr) {
+                        const errorMsg = xhr.responseJSON?.message || 'Có lỗi xảy ra';
+                        $('#warehouseError').text(errorMsg).show();
+                    }
+                });
+            });
+        });
+        $(document).ready(function() {
+                $('#warehouseForm').submit(function(event) {
+                    event.preventDefault();  // Prevent the form from submitting normally
+                    const formData = $(this).serialize();  // Get form data
+                    $.ajax({
+                        type: 'POST',
+                        url: `/add_warehouse/`,
+                        data: formData + '&csrfmiddlewaretoken=' + '{{ csrf_token }}',  // Include CSRF token
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                location.reload();  // Reload lại toàn bộ trang
+                            } else {
+                                $('#orderError').text(response.message || 'Có lỗi xảy ra').show();
+                            }
+                        },
+                        error: function(xhr) {
+                            const errorMsg = xhr.responseJSON?.message || 'Có lỗi xảy ra';
+                            $('#orderError').text(errorMsg).show();
+                        }
+                    });
+                });
+            });
+    </script>
+</head>
+<body>
+    <div id="addWarehouse">
+        <div id="warehouseError" style="display: none; color: red;"></div>
+        <h2>Tạo kho hàng</h2>
+        <form id="warehouseForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+    
+            <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+            {{ form.name }}
+    
+            <label for="{{ form.address.id_for_label }}">{{ form.address.label }}</label>
+            {{ form.address }}
+    
+            <div class="button-group">
+                <button type="submit">Lưu Kho</button>
+                <button type="button" onclick="hideInsertOrder()">Hủy</button>
+            </div>
+
+        </form>
+    </div>  
+
+    <div id="editWarehouse" style="display: none"> 
+        <h2>Sửa kho hàng</h2>
+        <div id="warehouseError" style="color: red; display: none;"></div>
+    
+        <form id="editWarehouseForm">
+            {% csrf_token %}
+            <input type="hidden" id="warehouse-id" name="warehouse_id">
+            <input type="hidden" id="user_id" name="user_id">
+            <label for="warehouse_name">Tên kho:</label>
+            <input type="text" id="warehouse_name" name="name" required>
+    
+            <label for="warehouse_address">Địa chỉ:</label>
+            <input type="text" id="warehouse_address" name="address" required>
+            <div class="button-warehouse-group">
+                <button type="submit">Lưu Kho</button>
+                <button type="button" onclick="hideEditWarehouse()">Hủy</button>
+            </div>
+        </form>
+    </div>
+
+    <h2>Danh sách kho hàng</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Tên Kho</th>
+                <th>Địa Điểm</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody id="warehousesTableBody">
+            {% for warehouse in warehouses %}
+            <tr>
+                <td>{{ warehouse.name }}</td>
+                <td>{{ warehouse.address }}</td>
+                <td>
+                    <button onclick="editWarehouse({{ warehouse.id }})">Sửa</button>
+                    <button onclick="deleteWarehouse({{ warehouse.id }})">Xóa</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">Không có dữ liệu</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+    
+
+{% endblock %}

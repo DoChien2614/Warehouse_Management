@@ -1,0 +1,64 @@
+{% extends "page1/base.html" %}
+{% load static %}
+{% block title %}Contact{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/contact1.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="contact-container">
+    <h2>
+        <i class="icon ph-bold ph-phone-call"></i>
+        <span>Liên Hệ</span>
+    </h2>
+
+    <div class="contact-info">
+        <p>Nếu bạn cần hỗ trợ hoặc có thắc mắc, vui lòng liên hệ qua các phương thức sau:</p>
+        
+        <ul>
+            <li>
+                <i class="icon ph-bold ph-envelope"></i>
+                <span>Email: <a href="mailto:duong0946688665@gmail.com">duong0946688665@gmail.com</a></span>
+            </li>
+            <li>
+                <i class="icon ph-bold ph-phone"></i>
+                <span>Phone: 0946688665</span>
+            </li>
+            <li>
+                <i class="icon ph-bold ph-map-pin"></i>
+                <span>Địa chỉ: <strong>96A Đ. Trần Phú, P. Mộ Lao, Hà Đông, Hà Nội, Việt Nam</strong></span>
+            </li>
+            <li>
+                <i class="icon ph-bold ph-facebook-logo"></i>
+                <span>Facebook: <a href="https://www.facebook.com/duong0946688665" target="_blank">facebook.com/duong0946688665</a></span>
+            </li>
+        </ul>
+        <h3>
+            <i class="icon ph-bold ph-clock"></i>
+            <span>Thời Gian Hỗ Trợ</span>
+        </h3>
+        <p><strong>Thứ 2 - Thứ 7:</strong> 8:00 - 18:00</p>
+        <p><strong>Chủ Nhật & Ngày Lễ:</strong> Nghỉ</p>
+    </div>
+
+    <div class="map-container">
+        <h3>
+            <i class="icon ph-bold ph-map-trifold"></i>
+            <span>Bản Đồ</span>
+        </h3>
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3579.7731668779847!2d105.78484157507951!3d20.980912980656417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135accdd8a1ad71%3A0xa2f9b16036648187!2zSOG7jWMgdmnhu4duIEPDtG5nIG5naOG7hyBCxrB1IGNow61uaCB2aeG7hW4gdGjDtG5n!5e1!3m2!1svi!2s!4v1742368829267!5m2!1svi!2s" 
+            width="100%" 
+            height="350" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+</div>
+
+
+
+{% endblock  %}

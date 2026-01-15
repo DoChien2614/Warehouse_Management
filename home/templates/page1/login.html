@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        {% load static %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static "css/login.css" %}">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <div class ="container">
+            <h2>Đăng Nhập</h2>
+            <form method="POST">
+                {%csrf_token%}
+                {%for key,value in form.errors.items %}
+                    {{value}}
+                {%endfor%}
+                <p><label>Tài Khoản:</label>{{form.username}}</p>
+                <p><label>Mật Khẩu:</label>{{form.password}}</p>
+                <input type="hidden" name = 'next' value = "/select_store/"/>
+                <input type="submit" value = "Đăng Nhập"/>
+            </form>
+        </div>
+    </body>
+</html>

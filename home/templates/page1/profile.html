@@ -1,0 +1,19 @@
+{% extends "page1/base.html" %}
+{% load static %}
+{% block title %}Information{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class= "update-info">
+    <h2>Cập nhật thông tin</h2>
+    <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Lưu thay đổi</button>
+    </form>
+</div>
+
+{% endblock %}

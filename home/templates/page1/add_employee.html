@@ -1,0 +1,14 @@
+{% extends "page1/base.html" %}
+
+{% block title %}Thêm Nhân Viên{% endblock %}
+
+{% block content %}
+<h2>Thêm nhân viên vào kho hàng</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Thêm nhân viên</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'page1/base.html' %}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/product-phieunh.css' %}">
+    <h2 style="margin-top: 25px; margin-left: 20px">Danh Sách Phiếu Nhập Hàng</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Mã phiếu</th>
+                <th scope="col">Tên SP</th>
+                <th scope="col">Loại SP</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Giá nhập</th>
+                <th scope="col">Ngày nhập</th>
+                <th scope="col">NCC</th>
+                <th scope="col">Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for receipt in receipts %}
+            <tr>
+                <td>{{ receipt.id }}</td>
+                <td>{{ receipt.name }}</td>
+                <td>{{ receipt.category }}</td>
+                <td>{{ receipt.quantity }}</td>
+                <td>{{ receipt.sale_price }} đ</td>
+                <td>{{ receipt.date_added|date:'d/m/Y H:i' }}</td>
+                <td>{{ receipt.supplier }}</td>
+                <td class="product-actions">
+                    <!-- Thêm các nút sửa / xóa tại đây -->
+                    <a href="#" class="btn btn-sm btn-primary" onclick="toggleEditImportForm(
+                        '{{ receipt.id }}',
+                        '{{ receipt.name|escapejs }}',
+                        '{{ receipt.category|escapejs }}',
+                        '{{ receipt.quantity }}',
+                        '{{ receipt.sale_price }}',
+                        '{{ receipt.supplier|escapejs }}'
+                    )">Sửa</a>
+                    |
+                    <a href="{% url 'delete_import_receipt' receipt.id %}" class="btn btn-sm btn-danger" 
+                       onclick="return confirm('Bạn có chắc chắn muốn xóa phiếu này không?')">Xóa</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" class="text-center">Chưa có phiếu nhập hàng nào.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+
+    <!-- Lớp phủ nền tối -->
+    <div id="edit-overlay" class="overlay" onclick="closeEditForm()"></div>
+
+    <!-- Form sửa phiếu nhập -->
+    <div class="edit-product-form" id="edit-product-form" style="display: none;">
+        <h2>Sửa phiếu nhập hàng</h2>
+        <form id="edit-form" method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="edit-form-grid">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="edit-receipt-product-name">Tên sản phẩm:</label>
+                        <input type="text" id="edit-receipt-product-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-receipt-category">Danh mục:</label>
+                        <input type="text" id="edit-receipt-category" name="category" required>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="form-group">
+                        <label for="edit-receipt-quantity">Số lượng:</label>
+                        <input type="number" id="edit-receipt-quantity" name="quantity" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-receipt-price">Giá nhập:</label>
+                        <input type="number" step="0.01" id="edit-receipt-price" name="sale_price" required>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="form-group" style="width: 100%;">
+                        <label for="edit-receipt-supplier">Nhà cung cấp:</label>
+                        <input type="text" id="edit-receipt-supplier" name="supplier" required>
+                    </div>
+                </div>
+            </div>            
+
+            <!-- Nhóm nút -->
+            <div class="button-group">
+                <button type="submit" class="confirm-btn">Lưu</button>
+                <button type="button" class="cancel-btn" onclick="closeEditImportForm()">Hủy</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="{% static 'js/product-phieunh.js' %}"></script>
+{% endblock %}
